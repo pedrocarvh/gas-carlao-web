@@ -4,6 +4,7 @@ import { ScrollStory } from "./components/ScrollStory"
 import { Pricing } from "./components/Pricing"
 import { HoursAndArea } from "./components/HoursAndArea"
 import { SinceBadge } from "./components/SinceBadge"
+import { Reviews } from "./components/Reviews"
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Pricing />
         <HoursAndArea />
         <SinceBadge />
+        <Reviews />
       </main>
     </>
   )
