@@ -40,7 +40,6 @@ export function ScrollStory() {
     )
   })
 
-  const displayLiters = reducedMotion ? 20 : liters
   const displayStep = reducedMotion ? 2 : activeStep
 
   return (
@@ -48,17 +47,18 @@ export function ScrollStory() {
       id="como-pedir"
       aria-labelledby="como-pedir-titulo"
       ref={containerRef}
-      className="relative bg-paper"
-      style={{ height: reducedMotion ? "auto" : "320vh" }}
+      // Height/position are set via Tailwind + the motion-reduce: variant (see
+      // @media (prefers-reduced-motion: reduce) in index.css) rather than a JS
+      // ternary on useReducedMotion(): matchMedia isn't available during the
+      // static prerender, so a JS-computed value renders wrong on first paint
+      // for reduced-motion visitors and then snaps once React hydrates. CSS
+      // media queries are evaluated by the browser immediately, identically
+      // on server- and client-rendered markup, so there's nothing to snap.
+      className="relative bg-paper h-[320vh] motion-reduce:h-auto"
     >
       <div
-        className="flex items-center overflow-hidden py-6 md:py-16"
-        style={
-          reducedMotion
-            ? undefined
-            : // svh: the small viewport, so mobile browser chrome never covers the steps
-              { position: "sticky", top: 72, height: "calc(100svh - 72px)" }
-        }
+        // svh: the small viewport, so mobile browser chrome never covers the steps
+        className="flex items-center overflow-hidden py-6 md:py-16 sticky top-[72px] h-[calc(100svh_-_72px)] motion-reduce:static motion-reduce:h-auto"
       >
         <div className="wrap grid items-center gap-6 md:grid-cols-[0.9fr_1.1fr] md:gap-12">
           <div className="flex flex-col items-center">
@@ -80,7 +80,10 @@ export function ScrollStory() {
               <rect x="80" y="4" width="60" height="22" rx="5" fill="#141C6E" />
               <g clipPath="url(#jugClip)">
                 <rect x="0" y="0" width="220" height="320" fill="#E8F3FB" />
-                <motion.g style={reducedMotion ? { y: FULL_Y } : { y: waterY }}>
+                {/* Same reasoning as the section/sticky styles above: the reduced-motion
+                    fill position is forced via CSS (.jug-water-fill in index.css) instead
+                    of a JS ternary, so it's correct on first paint with no hydration snap. */}
+                <motion.g className="jug-water-fill" style={{ y: waterY }}>
                   <path
                     ref={wavePathRef}
                     fill="url(#waterG)"
@@ -109,7 +112,11 @@ export function ScrollStory() {
               <path d="M40 200v70" stroke="#fff" strokeWidth="7" strokeLinecap="round" opacity=".55" />
             </svg>
             <div className="mt-3 font-display text-xl font-extrabold tabular-nums text-water-deep md:mt-4 md:text-2xl">
-              {displayLiters} de 20 litros
+              {/* Both spans render identically on server and client (neither depends on
+                  useReducedMotion()); CSS alone picks which is visible, so there's no
+                  hydration text mismatch for a reduced-motion visitor to trip over. */}
+              <span className="motion-reduce:hidden">{liters} de 20 litros</span>
+              <span className="hidden motion-reduce:inline">20 de 20 litros</span>
             </div>
           </div>
 

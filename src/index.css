@@ -99,3 +99,18 @@
     outline-offset: 3px;
   }
 }
+
+/* ScrollStory's water fill is normally driven by a Motion scroll-linked
+   MotionValue (see .jug-water-fill in src/components/ScrollStory.tsx), which
+   writes an inline `transform` on every scroll frame. Under reduced motion we
+   want the jug to render already-full from first paint, with no JS involved
+   (matchMedia isn't available during the static prerender, so a JS-computed
+   fallback would be wrong on the server-rendered HTML and only correct itself
+   after hydration). An `!important` media-query rule beats that inline style
+   unconditionally, so the jug is pinned full even as Motion keeps writing to
+   it while the user scrolls. 30px must match ScrollStory's `FULL_Y` constant. */
+@media (prefers-reduced-motion: reduce) {
+  .jug-water-fill {
+    transform: translateY(30px) !important;
+  }
+}
