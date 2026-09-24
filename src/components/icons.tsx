@@ -19,6 +19,49 @@ export function FlameIcon({ className }: IconProps) {
   )
 }
 
+export function StarIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M12 2.8l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.6l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8Z" />
+    </svg>
+  )
+}
+
+export function PinIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 21.5s-7-6.1-7-11.7a7 7 0 0 1 14 0c0 5.6-7 11.7-7 11.7Z" />
+      <circle cx="12" cy="9.8" r="2.6" />
+    </svg>
+  )
+}
+
+export function PhoneIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5.2 3.5h3.1l1.6 4.2-2.1 1.3a11.5 11.5 0 0 0 7.2 7.2l1.3-2.1 4.2 1.6v3.1a2 2 0 0 1-2.2 2A17.2 17.2 0 0 1 3.2 5.7a2 2 0 0 1 2-2.2Z" />
+    </svg>
+  )
+}
+
 export function DropIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
