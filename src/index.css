@@ -14,8 +14,30 @@
   --color-line: #D9DFEE;
   --color-wa: #1FA855;
 
+  /* Derived tints/shades of the palette above (no new hues). */
+  --color-wa-deep: #178A45; /* hover/pressed state of --color-wa */
+  --color-flame-deep: #CF6A0C; /* flame graphics on white/paper (3:1+) */
+  --color-mist: #C9CDEA; /* secondary copy on navy */
+  --color-mist-dim: #B9BEE0; /* tertiary copy on navy */
+  --color-live: #4BE08A; /* "aberto agora" status dot */
+  --color-idle: #9AA0BD; /* "fechado" status dot */
+
   --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
   --font-body: "Barlow", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --animate-live: live-ring 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+
+  @keyframes live-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    80%,
+    100% {
+      transform: scale(2.8);
+      opacity: 0;
+    }
+  }
 }
 
 @utility wrap {
@@ -23,23 +45,57 @@
   width: min(1120px, 100% - 2.5rem);
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 76px;
+/* Dark surfaces switch the focus ring to the warm accent so it stays visible. */
+@utility surface-dark {
+  --focus-ring: var(--color-flame-hot);
 }
 
-body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-body);
+/* WhatsApp action fill: brand green at rest, deeper shade on hover/press. */
+@utility btn-wa {
+  background-color: var(--color-wa);
+  color: #fff;
+  transition: background-color 180ms cubic-bezier(0.25, 1, 0.5, 1);
+  &:hover,
+  &:active {
+    background-color: var(--color-wa-deep);
+  }
 }
 
-h1, h2, h3 {
-  font-family: var(--font-display);
-}
+@layer base {
+  html {
+    scroll-padding-top: 76px;
+    scrollbar-color: var(--color-navy-soft) var(--color-paper);
+    -webkit-tap-highlight-color: transparent;
+  }
 
-:focus-visible {
-  outline: 3px solid var(--color-flame);
-  outline-offset: 3px;
-  border-radius: 4px;
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-flame-hot);
+    color: var(--color-navy-deep);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus-ring, var(--color-navy));
+    outline-offset: 3px;
+  }
 }
