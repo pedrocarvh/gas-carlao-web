@@ -25,40 +25,46 @@ export function Hero() {
   }
 
   return (
-    <section id="hero" className="overflow-hidden bg-navy text-white">
+    <section id="hero" className="surface-dark overflow-hidden bg-navy text-white">
       <div className="wrap grid grid-cols-[1.15fr_0.85fr] items-center gap-8 py-16 max-md:grid-cols-1 max-md:py-10">
         <div>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold">
-            <span
-              className={`h-2.5 w-2.5 rounded-full ${
-                status?.isOpen ? "bg-[#4BE08A] shadow-[0_0_0_4px_rgba(75,224,138,.2)]" : "bg-[#9aa0bd]"
-              }`}
-            />
+          <div className="mb-6 inline-flex items-center gap-2.5 rounded-full bg-white/10 py-1.5 pl-3.5 pr-4 text-sm font-semibold">
+            <span className="relative grid size-2.5 place-items-center" aria-hidden="true">
+              {status?.isOpen && (
+                // Slow "live" ring while open; static halo instead under reduced motion.
+                <span className="absolute inset-0 rounded-full bg-live motion-safe:animate-live" />
+              )}
+              <span
+                className={`relative size-2.5 rounded-full ${
+                  status?.isOpen ? "bg-live motion-reduce:shadow-[0_0_0_4px_rgb(75_224_138/0.2)]" : "bg-idle"
+                }`}
+              />
+            </span>
             <span>{status?.label ?? "Verificando horário…"}</span>
           </div>
-          <h1 className="font-display text-[clamp(3.1rem,9vw,6.4rem)] font-extrabold leading-none">
+          <h1 className="font-display text-[clamp(3.1rem,9vw,6rem)] font-extrabold leading-none">
             Acabou o gás?
             <span className="block text-flame-hot">A gente leva.</span>
           </h1>
-          <p className="mt-6 max-w-[36ch] text-xl text-[#C9CDEA]">
+          <p className="mt-6 max-w-[36ch] text-xl text-mist">
             Gás de cozinha e água mineral de 20 litros com entrega em toda Itaituba. É só chamar no WhatsApp.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
               href={buildWhatsAppLink(ORDER_MESSAGE)}
               target="_blank"
               rel="noopener"
-              className="inline-flex items-center gap-2 rounded-full bg-wa px-6 py-3 font-display text-xl font-bold text-white"
+              className="btn-wa inline-flex min-h-13 items-center gap-2 rounded-full px-6 font-display text-xl font-bold shadow-[0_10px_24px_-10px_rgb(0_0_0/0.5)]"
             >
               <WhatsAppIcon className="h-6 w-6" /> Pedir pelo WhatsApp
             </motion.a>
             <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
               href="#precos"
-              className="inline-flex items-center rounded-full px-6 py-3 font-display text-xl font-bold text-white shadow-[inset_0_0_0_2px_rgba(255,255,255,.45)]"
+              className="inline-flex min-h-13 items-center rounded-full px-6 font-display text-xl font-bold text-white shadow-[inset_0_0_0_2px_rgb(255_255_255/0.45)] transition-colors duration-200 hover:bg-white/10"
             >
               Ver preços
             </motion.a>
@@ -74,10 +80,16 @@ export function Hero() {
         >
           <motion.svg
             viewBox="0 0 240 330"
-            className="w-[min(360px,80%)] overflow-visible"
+            className="w-[min(360px,80%)] overflow-visible max-md:w-[min(250px,66%)]"
             style={reducedMotion ? undefined : { rotateX, rotateY }}
           >
             <defs>
+              <radialGradient id="flameGlow">
+                <stop offset="0" stopColor="#F28C1B" stopOpacity=".3" />
+                <stop offset=".3" stopColor="#F28C1B" stopOpacity=".15" />
+                <stop offset=".62" stopColor="#F28C1B" stopOpacity=".045" />
+                <stop offset="1" stopColor="#F28C1B" stopOpacity="0" />
+              </radialGradient>
               <linearGradient id="body" x1="0" x2="1">
                 <stop offset="0" stopColor="#1F2A8F" />
                 <stop offset=".35" stopColor="#3441B8" />
@@ -96,6 +108,8 @@ export function Hero() {
               transition={{ duration: 0.9, delay: 0.35, ease: [0.2, 0.9, 0.3, 1.2] }}
               style={{ transformOrigin: "120px 86px" }}
             >
+              {/* Warm light the flame throws on the navy; ignites with it. */}
+              <circle cx="120" cy="96" r="150" fill="url(#flameGlow)" />
               <motion.path
                 animate={
                   reducedMotion
