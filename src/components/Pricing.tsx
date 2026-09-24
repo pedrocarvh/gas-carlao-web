@@ -29,11 +29,14 @@ function PriceItem({
         ) : (
           <span className="font-display text-xl font-bold leading-none text-mist">Consulte</span>
         )}
+        {/* 14px label is normal-size text, so on the green it switches to navy-deep
+            (5.5:1) instead of white (3.1:1). Press feedback is a small scale, not a
+            darker green, which would drop the dark label below 4.5:1. */}
         <a
           href={buildWhatsAppLink(message)}
           target="_blank"
           rel="noopener"
-          className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-white/10 px-3 text-sm font-semibold text-white transition-colors duration-200 after:absolute after:inset-0 after:content-[''] group-hover:bg-wa group-active:bg-wa-deep"
+          className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-white/10 px-3 text-sm font-semibold text-white transition duration-200 after:absolute after:inset-0 after:content-[''] group-hover:bg-wa group-hover:text-navy-deep group-active:bg-wa group-active:text-navy-deep motion-safe:group-active:scale-95"
         >
           <WhatsAppIcon className="h-4 w-4" />
           {price != null ? "pedir este" : "perguntar"}
