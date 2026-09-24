@@ -34,7 +34,10 @@ export function FloatingWhatsApp() {
             bottom: "max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem))",
             right: "max(1.25rem, calc(env(safe-area-inset-right) + 0.75rem))",
           }}
-          className="btn-wa fixed z-40 grid h-14 w-14 place-items-center rounded-full shadow-[0_10px_24px_-6px_rgb(13_19_80/0.45)]"
+          // Fixed over whatever section is scrolled beneath (paper, white, navy,
+          // navy-deep footer), so a single ring colour cannot guarantee contrast:
+          // two-tone ring = white fill in the 3px offset gap + navy outline.
+          className="btn-wa fixed z-40 grid h-14 w-14 place-items-center rounded-full shadow-[0_10px_24px_-6px_rgb(13_19_80/0.45)] [--focus-ring:var(--color-navy)] focus-visible:shadow-[0_0_0_3px_#fff,0_10px_24px_-6px_rgb(13_19_80/0.45)]"
         >
           <WhatsAppIcon className="h-8 w-8" />
         </motion.a>
