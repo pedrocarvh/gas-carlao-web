@@ -5,6 +5,7 @@ import { Pricing } from "./components/Pricing"
 import { HoursAndArea } from "./components/HoursAndArea"
 import { SinceBadge } from "./components/SinceBadge"
 import { Reviews } from "./components/Reviews"
+import { Location } from "./components/Location"
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <HoursAndArea />
         <SinceBadge />
         <Reviews />
+        <Location />
       </main>
     </>
   )
