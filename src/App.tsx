@@ -6,6 +6,9 @@ import { HoursAndArea } from "./components/HoursAndArea"
 import { SinceBadge } from "./components/SinceBadge"
 import { Reviews } from "./components/Reviews"
 import { Location } from "./components/Location"
+import { FinalCta } from "./components/FinalCta"
+import { Footer } from "./components/Footer"
+import { FloatingWhatsApp } from "./components/FloatingWhatsApp"
 
 export default function App() {
   return (
@@ -19,7 +22,10 @@ export default function App() {
         <SinceBadge />
         <Reviews />
         <Location />
+        <FinalCta />
       </main>
+      <Footer />
+      <FloatingWhatsApp />
     </>
   )
 }
