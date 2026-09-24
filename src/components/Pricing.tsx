@@ -29,18 +29,24 @@ function PriceItem({
         ) : (
           <span className="font-display text-xl font-bold leading-none text-mist">Consulte</span>
         )}
-        {/* 14px label is normal-size text, so on the green it switches to navy-deep
-            (5.5:1) instead of white (3.1:1). Press feedback is a small scale, not a
-            darker green, which would drop the dark label below 4.5:1. */}
+        {/* The <a> carries only the row-wide ::after overlay (positioned against the <li>)
+            and the focus ring. Never put transform/scale/filter/will-change on the <a> or
+            the <li>: any of them makes that element the overlay's containing block, so a
+            press that starts off the pill loses the link mid-click.
+            The visible pill is the inner span. Its 14px label is normal-size text, so on
+            the green it turns navy-deep (5.5:1) rather than white (3.1:1); press feedback
+            is a small scale on the span, not a darker green (navy-deep on it: 3.9:1). */}
         <a
           href={buildWhatsAppLink(message)}
           target="_blank"
           rel="noopener"
-          className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-white/10 px-3 text-sm font-semibold text-white transition duration-200 after:absolute after:inset-0 after:content-[''] group-hover:bg-wa group-hover:text-navy-deep group-active:bg-wa group-active:text-navy-deep motion-safe:group-active:scale-95"
+          className="inline-flex rounded-full text-sm font-semibold after:absolute after:inset-0 after:content-['']"
         >
-          <WhatsAppIcon className="h-4 w-4" />
-          {price != null ? "pedir este" : "perguntar"}
-          <span className="sr-only">: {name}</span>
+          <span className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-white/10 px-3 text-white transition duration-200 group-hover:bg-wa group-hover:text-navy-deep group-active:bg-wa group-active:text-navy-deep motion-safe:group-active:scale-95">
+            <WhatsAppIcon className="h-4 w-4" />
+            {price != null ? "pedir este" : "perguntar"}
+            <span className="sr-only">: {name}</span>
+          </span>
         </a>
       </div>
     </li>
