@@ -1,5 +1,4 @@
-import { motion } from "motion/react"
-import { FlameIcon, DropIcon } from "./icons"
+import { FlameIcon, DropIcon, WhatsAppIcon } from "./icons"
 import { GAS_ACCESSORY, GAS_PRODUCTS, WATER_PRODUCTS } from "../data/site"
 import { buildWhatsAppLink } from "../lib/whatsapp"
 
@@ -15,85 +14,89 @@ function PriceItem({
   message: string
 }) {
   return (
-    <motion.div
-      whileHover={{ x: 4 }}
-      className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b border-dashed border-white/20 py-4"
-    >
-      <strong className="font-display text-2xl font-bold leading-tight">{name}</strong>
-      <span className="col-start-1 text-sm text-[#B9BEE0]">{description}</span>
-      <div className="col-start-2 row-span-2 text-right">
+    // The whole row is the tap target (the link's ::after stretches over it),
+    // so ordering never depends on hitting a small link on a phone.
+    <li className="group relative grid grid-cols-[1fr_auto] items-center gap-x-4 border-b border-dashed border-white/20 py-4">
+      <div>
+        <strong className="block font-display text-2xl font-bold leading-tight">{name}</strong>
+        <span className="mt-0.5 block text-sm text-mist-dim">{description}</span>
+      </div>
+      <div className="flex flex-col items-end gap-1.5 text-right">
         {price != null ? (
-          <b className="block font-display text-4xl font-extrabold tabular-nums text-flame-hot">R$ {price}</b>
+          <b className="whitespace-nowrap font-display text-4xl font-extrabold leading-none tabular-nums text-flame-hot">
+            <span className="mr-0.5 align-[0.55em] text-[0.45em]">R$</span> {price}
+          </b>
         ) : (
-          <span className="block font-display text-xl font-bold text-[#C9CDEA]">Consulte</span>
+          <span className="font-display text-xl font-bold leading-none text-mist">Consulte</span>
         )}
-        <motion.a
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <a
           href={buildWhatsAppLink(message)}
           target="_blank"
           rel="noopener"
-          className="mt-1 inline-block text-sm font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
+          className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-white/10 px-3 text-sm font-semibold text-white transition-colors duration-200 after:absolute after:inset-0 after:content-[''] group-hover:bg-wa group-active:bg-wa-deep"
         >
+          <WhatsAppIcon className="h-4 w-4" />
           {price != null ? "pedir este" : "perguntar"}
-        </motion.a>
+          <span className="sr-only">: {name}</span>
+        </a>
       </div>
-    </motion.div>
+    </li>
   )
 }
 
 export function Pricing() {
   return (
-    <section id="precos" className="py-24">
+    <section id="precos" className="py-20 md:py-24">
       <div className="wrap">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-8">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-4 md:mb-10">
           <h2 className="font-display text-[clamp(2.3rem,6vw,3.6rem)] font-extrabold text-navy">Nossos preços</h2>
           <p className="max-w-[34ch] text-xl text-muted">
             Toque em &quot;pedir este&quot; e a mensagem já vai pronta para o nosso WhatsApp.
           </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5 }}
-          className="rounded-[22px] bg-navy p-6 text-white sm:p-10"
-        >
-          <div className="grid gap-10 sm:grid-cols-2">
+        <div className="surface-dark rounded-2xl bg-navy p-6 text-white sm:p-10">
+          <div className="grid gap-10 md:grid-cols-2">
             <div>
               <h3 className="flex items-center gap-2 border-b-2 border-white/20 pb-3 font-display text-2xl font-extrabold">
                 <FlameIcon className="h-6 w-6" /> Gás de cozinha
               </h3>
-              {GAS_PRODUCTS.map((p) => (
-                <PriceItem key={p.name} name={p.name} description={p.description} price={p.price} message={p.whatsappMessage} />
-              ))}
-              <PriceItem
-                name={GAS_ACCESSORY.name}
-                description={GAS_ACCESSORY.description}
-                message={GAS_ACCESSORY.whatsappMessage}
-              />
+              <ul>
+                {GAS_PRODUCTS.map((p) => (
+                  <PriceItem key={p.name} name={p.name} description={p.description} price={p.price} message={p.whatsappMessage} />
+                ))}
+                <PriceItem
+                  name={GAS_ACCESSORY.name}
+                  description={GAS_ACCESSORY.description}
+                  message={GAS_ACCESSORY.whatsappMessage}
+                />
+              </ul>
             </div>
-            <div>
+            <div className="flex flex-col">
               <h3 className="flex items-center gap-2 border-b-2 border-white/20 pb-3 font-display text-2xl font-extrabold">
                 <DropIcon className="h-6 w-6" /> Água mineral 20 L
               </h3>
-              {WATER_PRODUCTS.map((p) => (
-                <PriceItem key={p.name} name={p.name} description={p.description} price={p.price} message={p.whatsappMessage} />
-              ))}
+              <ul>
+                {WATER_PRODUCTS.map((p) => (
+                  <PriceItem key={p.name} name={p.name} description={p.description} price={p.price} message={p.whatsappMessage} />
+                ))}
+              </ul>
+
+              {/* Payment + disclaimer close the water column, so both columns end together on desktop. */}
+              <div className="mt-8 md:mt-auto">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="mr-1 font-semibold">Pagamento na entrega:</span>
+                  {["Pix", "Cartão", "Dinheiro"].map((chip) => (
+                    <span key={chip} className="rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold">
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-4 text-sm text-mist-dim">Preços sujeitos a alteração. Confirme o valor do dia no WhatsApp.</p>
+              </div>
             </div>
           </div>
-
-          <div className="mt-8 flex flex-wrap items-center gap-2">
-            <span className="mr-1 font-semibold">Pagamento na entrega:</span>
-            {["Pix", "Cartão", "Dinheiro"].map((chip) => (
-              <span key={chip} className="rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold">
-                {chip}
-              </span>
-            ))}
-          </div>
-          <p className="mt-6 text-sm text-[#B9BEE0]">Preços sujeitos a alteração. Confirme o valor do dia no WhatsApp.</p>
-        </motion.div>
+        </div>
       </div>
     </section>
   )
