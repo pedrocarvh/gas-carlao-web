@@ -28,7 +28,13 @@ export function FloatingWhatsApp() {
           target="_blank"
           rel="noopener"
           aria-label="Pedir pelo WhatsApp"
-          className="fixed bottom-6 right-6 z-40 grid h-14 w-14 place-items-center rounded-full bg-wa text-white shadow-lg"
+          // viewport-fit=cover lets content run under the iPhone home
+          // indicator / notch, so keep clear of the safe-area insets.
+          style={{
+            bottom: "max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem))",
+            right: "max(1.25rem, calc(env(safe-area-inset-right) + 0.75rem))",
+          }}
+          className="btn-wa fixed z-40 grid h-14 w-14 place-items-center rounded-full shadow-[0_10px_24px_-6px_rgb(13_19_80/0.45)]"
         >
           <WhatsAppIcon className="h-8 w-8" />
         </motion.a>

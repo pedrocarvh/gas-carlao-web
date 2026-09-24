@@ -1,3 +1,4 @@
+import { MotionConfig } from "motion/react"
 import { Header } from "./components/Header"
 import { Hero } from "./components/Hero"
 import { ScrollStory } from "./components/ScrollStory"
@@ -11,8 +12,12 @@ import { Footer } from "./components/Footer"
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp"
 
 export default function App() {
+  // reducedMotion="user": under prefers-reduced-motion, Motion skips every
+  // transform/layout animation (hover and tap scales, the floating button's
+  // pop-in) while keeping opacity and colour changes, so state still reads.
+  // Hero and ScrollStory additionally switch to their static fallbacks.
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <Header />
       <main id="inicio">
         <Hero />
@@ -26,6 +31,6 @@ export default function App() {
       </main>
       <Footer />
       <FloatingWhatsApp />
-    </>
+    </MotionConfig>
   )
 }
